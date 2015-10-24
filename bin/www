@@ -261,16 +261,13 @@ io.sockets.on('connection', function(socket){
 		socket.on('BROADCAST_TO_MEMBERS', function(data, announcement){
 			console.log("BROADCAST_TO_MEMBER " + announcement)
 			
-if(!(_.isUndefined(clients[data.room]))){
-  	var sid = clients[data.room].members[0].socketId
-						io.to(sid).emit('BROADCAST_ANNOUNCEMENT', clients[data.room], announcement)
-						
-			if(clients[data.room].owner.socketId === socket.id){
-				for (var i = clients[data.room].members.length - 1; i >= 0; i--) {
-					if(clients[data.room].owner.socketId !== clients[data.room].members[i].socketId){
-					    console.log("in")		
-						var sid = clients[data.room].members[i].socketId
-						io.to(sid).emit('BROADCAST_ANNOUNCEMENT', clients[data.room], announcement)
+			if(!(_.isUndefined(clients[data.room]))){
+				if(clients[data.room].owner.socketId === socket.id){
+					for (var i = clients[data.room].members.length - 1; i >= 0; i--) {
+						if(clients[data.room].owner.socketId !== clients[data.room].members[i].socketId){
+					   	 console.log("in")		
+							var sid = clients[data.room].members[i].socketId
+							io.to(sid).emit('BROADCAST_ANNOUNCEMENT', clients[data.room], announcement)
 						}
 				 };
 				console.log("IS_OWNER")
