@@ -1773,6 +1773,11 @@ IDE_Morph.makeSocket = function (myself, shareboxId) {
         myself.showYouHaveBeenRemovedPopup();
         console.log("[SOCKET-RECEIVE] BE_REMOVED: " + JSON.stringify(data));
     })
+    
+  //  sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
+    //    myself.showBroadcastPopupToMembers(announcement);
+      //  console.log("[SOCKET-RECEIVE] BROADCAST_ANNOUNCEMENT: " + JSON.stringify(announcement));
+    //})
 
     sharer.socket.on('INVITE_JOIN', function(data){
         if(data.inviteId == tempIdentifier){
@@ -6093,172 +6098,25 @@ IDE_Morph.prototype.shareBoxSettingsMenu = function() {
 IDE_Morph.prototype.showBroadCastPopup = function(){
     var socketData = {room:shareboxId}
 	var announcement = prompt("Please enter announcement: ");
-    var tempAnnouncement = announcement;
-	
+   
 	    if (announcement != null) {
 	    	console.log("when announcement is key = " + announcement);
 	    	this.sharer.socket.emit('BROADCAST_TO_MEMBERS', socketData, announcement);
 	    }
 	    	
-this.sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(data, announcement){
+this.sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
 	alert(announcement);
 	alert.destroy();
 })
 };
 
-// IDE_Morph menu actions
+/*
+IDE_Morph.prototype.showBroadCastPopupToMembers = function(announcement){
 
-IDE_Morph.prototype.aboutSnap = function () {
-    var dlg, aboutTxt, noticeTxt, creditsTxt, versions = '', translations,
-        module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
-        world = this.world();
-
-    aboutTxt = 'Snap! 4.0\nBuild Your Own Blocks\n\n--- beta ---\n\n'
-        + 'Copyright \u24B8 2014 Jens M\u00F6nig and '
-        + 'Brian Harvey\n'
-        + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'
-
-        + 'Snap! is developed by the University of California, Berkeley\n'
-        + '          with support from the National Science Foundation '
-        + 'and MioSoft.   \n'
-
-        + 'The design of Snap! is influenced and inspired by Scratch,\n'
-        + 'from the Lifelong Kindergarten group at the MIT Media Lab\n\n'
-
-        + 'for more information see http://snap.berkeley.edu\n'
-        + 'and http://scratch.mit.edu';
-
-    noticeTxt = localize('License')
-        + '\n\n'
-        + 'Snap! is free software: you can redistribute it and/or modify\n'
-        + 'it under the terms of the GNU Affero General Public License as\n'
-        + 'published by the Free Software Foundation, either version 3 of\n'
-        + 'the License, or (at your option) any later version.\n\n'
-
-        + 'This program is distributed in the hope that it will be useful,\n'
-        + 'but WITHOUT ANY WARRANTY; without even the implied warranty of\n'
-        + 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n'
-        + 'GNU Affero General Public License for more details.\n\n'
-
-        + 'You should have received a copy of the\n'
-        + 'GNU Affero General Public License along with this program.\n'
-        + 'If not, see http://www.gnu.org/licenses/';
-
-    creditsTxt = localize('Contributors')
-        + '\n\nNathan Dinsmore: Saving/Loading, Snap-Logo Design, '
-        + 'countless bugfixes'
-        + '\nKartik Chandra: Paint Editor'
-        + '\nMichael Ball: Time/Date UI, many bugfixes'
-        + '\n"Ava" Yuan Yuan: Graphic Effects'
-        + '\nKyle Hotchkiss: Block search design'
-        + '\nIan Reynolds: UI Design, Event Bindings, '
-        + 'Sound primitives'
-        + '\nIvan Motyashov: Initial Squeak Porting'
-        + '\nDavide Della Casa: Morphic Optimizations'
-        + '\nAchal Dave: Web Audio'
-        + '\nJoe Otto: Morphic Testing and Debugging';
-
-    for (module in modules) {
-        if (Object.prototype.hasOwnProperty.call(modules, module)) {
-            versions += ('\n' + module + ' (' +
-                modules[module] + ')');
-        }
-    }
-    if (versions !== '') {
-        versions = localize('current module versions:') + ' \n\n' +
-            'morphic (' + morphicVersion + ')' +
-            versions;
-    }
-    translations = localize('Translations') + '\n' + SnapTranslator.credits();
-
-    dlg = new DialogBoxMorph();
-    dlg.inform('About Snap', aboutTxt, world);
-    btn1 = dlg.buttons.children[0];
-    translatorsBtn = dlg.addButton(
-        function () {
-            dlg.body.text = translations;
-            dlg.body.drawNew();
-            btn1.show();
-            btn2.show();
-            btn3.hide();
-            btn4.hide();
-            licenseBtn.hide();
-            translatorsBtn.hide();
-            dlg.fixLayout();
-            dlg.drawNew();
-            dlg.setCenter(world.center());
-        },
-        'Translators...'
-    );
-    btn2 = dlg.addButton(
-        function () {
-            dlg.body.text = aboutTxt;
-            dlg.body.drawNew();
-            btn1.show();
-            btn2.hide();
-            btn3.show();
-            btn4.show();
-            licenseBtn.show();
-            translatorsBtn.hide();
-            dlg.fixLayout();
-            dlg.drawNew();
-            dlg.setCenter(world.center());
-        },
-        'Back...'
-    );
-    btn2.hide();
-    licenseBtn = dlg.addButton(
-        function () {
-            dlg.body.text = noticeTxt;
-            dlg.body.drawNew();
-            btn1.show();
-            btn2.show();
-            btn3.hide();
-            btn4.hide();
-            licenseBtn.hide();
-            translatorsBtn.hide();
-            dlg.fixLayout();
-            dlg.drawNew();
-            dlg.setCenter(world.center());
-        },
-        'License...'
-    );
-    btn3 = dlg.addButton(
-        function () {
-            dlg.body.text = versions;
-            dlg.body.drawNew();
-            btn1.show();
-            btn2.show();
-            btn3.hide();
-            btn4.hide();
-            licenseBtn.hide();
-            translatorsBtn.hide();
-            dlg.fixLayout();
-            dlg.drawNew();
-            dlg.setCenter(world.center());
-        },
-        'Modules...'
-    );
-    btn4 = dlg.addButton(
-        function () {
-            dlg.body.text = creditsTxt;
-            dlg.body.drawNew();
-            btn1.show();
-            btn2.show();
-            translatorsBtn.show();
-            btn3.hide();
-            btn4.hide();
-            licenseBtn.hide();
-            dlg.fixLayout();
-            dlg.drawNew();
-            dlg.setCenter(world.center());
-        },
-        'Credits...'
-    );
-    translatorsBtn.hide();
-    dlg.fixLayout();
-    dlg.drawNew();
+	alert();
+	alert.destroy();
 };
+*/
 
 IDE_Morph.prototype.editProjectNotes = function () {
     var dialog = new DialogBoxMorph().withKey('projectNotes'),

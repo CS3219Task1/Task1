@@ -265,18 +265,19 @@ io.sockets.on('connection', function(socket){
 				if(clients[data.room].owner.socketId === socket.id){
 					for (var i = clients[data.room].members.length - 1; i >= 0; i--) {
 						if(clients[data.room].owner.socketId !== clients[data.room].members[i].socketId){
-					   	 console.log("in")		
-							var sid = clients[data.room].members[i].socketId
-							io.to(sid).emit('BROADCAST_ANNOUNCEMENT', clients[data.room], announcement)
+					   	 console.log("in")				
+						io.to(clients[data.room].members[i].socketId).emit('BROADCAST_ANNOUNCEMENT', announcement)
+						 console.log(clients[data.room].members[i].clientId)
 						}
 				 };
 				console.log("IS_OWNER")
 			} else {
 			    announcement = "Not allow to broadcast announcement! You are not the owner"
-				io.to(socket.id).emit('BROADCAST_ANNOUNCEMENT', clients[data.room], announcement)
+				io.to(socket.id).emit('BROADCAST_ANNOUNCEMENT', announcement)
 			}
 		}
-			io.emit('SOCKET_CONTROL_UPDATE', clients);
+		console.log("end")
+			
          })
 
 
