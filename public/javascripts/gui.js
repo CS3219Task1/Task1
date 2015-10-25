@@ -6110,14 +6110,6 @@ this.sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
 })
 };
 
-/*
-IDE_Morph.prototype.showBroadCastPopupToMembers = function(announcement){
-
-	alert();
-	alert.destroy();
-};
-*/
-
 IDE_Morph.prototype.editProjectNotes = function () {
     var dialog = new DialogBoxMorph().withKey('projectNotes'),
         frame = new ScrollFrameMorph(),
