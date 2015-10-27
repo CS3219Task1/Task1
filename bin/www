@@ -158,6 +158,7 @@ io.sockets.on('connection', function(socket){
 						
 					};
 					}
+					
 
 				
 				}
@@ -268,7 +269,7 @@ io.sockets.on('connection', function(socket){
 					   	 console.log("in")				
 						io.to(clients[data.room].members[i].socketId).emit('BROADCAST_ANNOUNCEMENT', announcement)
 						 console.log(clients[data.room].members[i].clientId)
-						}
+						} 
 				 };
 				console.log("IS_OWNER")
 			} else {

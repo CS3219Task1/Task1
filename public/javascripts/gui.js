@@ -1774,10 +1774,10 @@ IDE_Morph.makeSocket = function (myself, shareboxId) {
         console.log("[SOCKET-RECEIVE] BE_REMOVED: " + JSON.stringify(data));
     })
     
-  //  sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
-    //    myself.showBroadcastPopupToMembers(announcement);
-      //  console.log("[SOCKET-RECEIVE] BROADCAST_ANNOUNCEMENT: " + JSON.stringify(announcement));
-    //})
+    sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
+      myself.showBroadcastPopupToMembers(announcement);
+      console.log("[SOCKET-RECEIVE] BROADCAST_ANNOUNCEMENT: " + JSON.stringify(announcement));
+    })
 
     sharer.socket.on('INVITE_JOIN', function(data){
         if(data.inviteId == tempIdentifier){
@@ -6100,14 +6100,18 @@ IDE_Morph.prototype.showBroadCastPopup = function(){
 	var announcement = prompt("Please enter announcement: ");
    
 	    if (announcement != null) {
-	    	console.log("when announcement is key = " + announcement);
 	    	this.sharer.socket.emit('BROADCAST_TO_MEMBERS', socketData, announcement);
 	    }
 	    	
-this.sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
+//this.sharer.socket.on('BROADCAST_ANNOUNCEMENT', function(announcement){
+	//alert(announcement);
+	//alert.destroy();
+//})
+};
+
+IDE_Morph.prototype.showBroadcastPopupToMembers= function (announcement) {
 	alert(announcement);
 	alert.destroy();
-})
 };
 
 IDE_Morph.prototype.editProjectNotes = function () {
