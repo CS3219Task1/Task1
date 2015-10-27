@@ -1779,6 +1779,11 @@ IDE_Morph.makeSocket = function (myself, shareboxId) {
       console.log("[SOCKET-RECEIVE] BROADCAST_ANNOUNCEMENT: " + JSON.stringify(announcement));
     })
 
+    sharer.socket.on('SHOW_NOTIFICATIONS', function(data){
+      myself.showOwnerNotification(data);
+      console.log("[SOCKET-RECEIVE] Show notification");
+    })
+
     sharer.socket.on('INVITE_JOIN', function(data){
         if(data.inviteId == tempIdentifier){
             myself.showRequestReceivedMessage(data);
@@ -6110,9 +6115,17 @@ IDE_Morph.prototype.showBroadCastPopup = function(){
 };
 
 IDE_Morph.prototype.showBroadcastPopupToMembers= function (announcement) {
+	var socketData = {room:shareboxId}
 	alert(announcement);
+	this.sharer.socket.emit('NOTIFY_OWNER', socketData);
 	alert.destroy();
 };
+
+IDE_Morph.prototype.showOwnerNotification= function () {
+	alert("All users read annoncement");
+	alert.destroy();
+};
+
 
 IDE_Morph.prototype.editProjectNotes = function () {
     var dialog = new DialogBoxMorph().withKey('projectNotes'),
