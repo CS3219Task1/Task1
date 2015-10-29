@@ -289,6 +289,7 @@ io.sockets.on('connection', function(socket){
 			if(noOfClose == (clients[data.room].members.length-1)){
 			console.log("Notified owner")
 			io.to(clients[data.room].owner.socketId).emit('SHOW_NOTIFICATIONS', data)
+			noOfClose=0;
 			}
 		})
 		
