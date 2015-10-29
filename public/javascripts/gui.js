@@ -6115,15 +6115,117 @@ IDE_Morph.prototype.showBroadCastPopup = function(){
 };
 
 IDE_Morph.prototype.showBroadcastPopupToMembers= function (announcement) {
-	var socketData = {room:shareboxId}
-	alert(announcement);
-	this.sharer.socket.emit('NOTIFY_OWNER', socketData);
-	alert.destroy();
+
+	 var world = this.world();
+    var myself = this;
+    var popupWidth = 400;
+    var popupHeight = 300;
+
+    if (this.broadcastPopupToMembers) {
+        this.broadcastPopupToMembers.destroy();
+    }
+    this.broadcastPopupToMembers = new DialogBoxMorph();
+    this.broadcastPopupToMembers.setExtent(new Point(popupWidth, popupHeight));
+
+    // close dialog button
+    button = new PushButtonMorph(
+        this,
+        null,
+        (String.fromCharCode("0xf00d")),
+        null,
+        null,
+        null,
+        "redCircleIconButton"
+    );
+    button.setRight(this.broadcastPopupToMembers.right() - 3);
+    button.setTop(this.broadcastPopupToMembers.top() + 2);
+    button.action = function () { myself.broadcastPopupToMembers.cancel(); };
+    button.drawNew();
+    button.fixLayout();
+    this.broadcastPopupToMembers.add(button);
+
+    // add title
+    this.broadcastPopupToMembers.labelString = "Announcement";
+    this.broadcastPopupToMembers.createLabel();
+
+    txt = new TextMorph(announcement);
+    txt.setCenter(this.broadcastPopupToMembers.center());
+    this.broadcastPopupToMembers.add(txt);
+    txt.drawNew();
+
+    // "OK" button, closes the dialog.
+    okButton = new PushButtonMorph(null, null, "Alrighty", null, null, null, "green");
+    okButton.setCenter(this.broadcastPopupToMembers.center());
+    okButton.setBottom(this.broadcastPopupToMembers.bottom() - 20);
+    okButton.action = function() { 
+    	  var result = "success";
+	        if (result === "success") { 
+	           var socketData = {room:shareboxId}
+	           myself.sharer.socket.emit('NOTIFY_OWNER', socketData);
+    	       myself.broadcastPopupToMembers.cancel(); 
+	        }
+    	};
+    this.broadcastPopupToMembers.add(okButton);
+
+    // popup
+    this.broadcastPopupToMembers.drawNew();
+    this.broadcastPopupToMembers.fixLayout();
+    this.broadcastPopupToMembers.popUp(world);
 };
 
 IDE_Morph.prototype.showOwnerNotification= function () {
-	alert("All users read annoncement");
-	alert.destroy();
+	 var world = this.world();
+	    var myself = this;
+	    var popupWidth = 400;
+	    var popupHeight = 300;
+
+	    if (this.ownerNotification) {
+	        this.ownerNotification.destroy();
+	    }
+	    this.ownerNotification = new DialogBoxMorph();
+	    this.ownerNotification.setExtent(new Point(popupWidth, popupHeight));
+
+	    // close dialog button
+	    button = new PushButtonMorph(
+	        this,
+	        null,
+	        (String.fromCharCode("0xf00d")),
+	        null,
+	        null,
+	        null,
+	        "redCircleIconButton"
+	    );
+	    button.setRight(this.ownerNotification.right() - 3);
+	    button.setTop(this.ownerNotification.top() + 2);
+	    button.action = function () { myself.ownerNotification.cancel(); };
+	    button.drawNew();
+	    button.fixLayout();
+	    this.ownerNotification.add(button);
+
+	    // add title
+	    this.ownerNotification.labelString = "Notification!";
+	    this.ownerNotification.createLabel();
+
+	    txt = new TextMorph("All users have read the announcement");
+	    txt.setCenter(this.ownerNotification.center());
+	    this.ownerNotification.add(txt);
+	    txt.drawNew();
+
+	    // "OK" button, closes the dialog.
+	    okButton = new PushButtonMorph(null, null, "Alrighty", null, null, null, "green");
+	    okButton.setCenter(this.ownerNotification.center());
+	    okButton.setBottom(this.ownerNotification.bottom() - 20);
+	    okButton.action = function() { 
+	    
+	    	       myself.ownerNotification.cancel(); 
+		       
+	    	};
+	    this.ownerNotification.add(okButton);
+
+	    // popup
+	    this.ownerNotification.drawNew();
+	    this.ownerNotification.fixLayout();
+	    this.ownerNotification.popUp(world);
 };
 
 

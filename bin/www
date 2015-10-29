@@ -284,13 +284,17 @@ io.sockets.on('connection', function(socket){
          })
 
 		socket.on('NOTIFY_OWNER', function(data){
+		if(noOfClose  == (clients[data.room].members.length-1)){
+			noOfClose = 0;
+			}
 		noOfClose++;
 		console.log("Num of users: "+ noOfClose)
+		console.log("Num of clients: "+ clients[data.room].members.length-1)
 			if(noOfClose == (clients[data.room].members.length-1)){
 			console.log("Notified owner")
 			io.to(clients[data.room].owner.socketId).emit('SHOW_NOTIFICATIONS', data)
-			noOfClose=0;
 			}
+			
 		})
 		
 		socket.on('disconnect', function () {
